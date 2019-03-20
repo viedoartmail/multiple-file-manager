@@ -1,0 +1,35 @@
+{
+    "appId": "com.electron.multiplefilemanager",
+    "productName": "Multiple File Manager",
+    "compression": "maximum",
+    "copyright": "Copyright @dhanyn10",
+    "directories": {
+      "output": "out"
+    },
+    "files": [
+      "**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.file-manager",
+      "icon": "build/icon.icns",
+      "type": "distribution"
+    },
+    "linux": {
+      "icon": "./build",
+      "synopsis": "Multiple File Manager App",
+      "category": "file manager"
+    },
+    "snap": {
+      "plugs": [
+        "default",
+        "desktop"
+      ]
+    },
+    "win": {
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
