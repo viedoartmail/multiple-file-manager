@@ -10,7 +10,7 @@ document.addEventListener('click', function (event) {
     }
 })
 //initiate electron filesystem
-fs = require('fs');
+let fs = require('fs');
 
 $("#browse-directory").click(function(){
     //show open directory window
@@ -63,6 +63,7 @@ $("#apply-rename").click(function(){
                 closebtn: true
             });
         }
+
         else
         {
             //insert forward slash at the end of directory name
@@ -75,6 +76,39 @@ $("#apply-rename").click(function(){
             //filesystem use function read current directory
             fs.readdir(directory_location, function(error, file){
 
+                /**
+                 * ==================================================
+                 * displaying list of file name in bootstrap popup 
+                 * ==================================================
+                 */
+
+                //array to store all file name in recent directory
+                var arrfilename = [];
+
+                //looping to store filename
+                file.forEach((filename) => {
+                    arrfilename.push(filename);
+                })
+
+                //create html container that will display list of file name in a form with checkbox
+                var htmlfilename = "<div class='mfm-list-checkbox form-group mt-3'>";
+                for(i = 0; i < arrfilename.length; i++)
+                {
+                    htmlfilename += `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="`+ arrfilename[i] +`" checked>
+                        <label class="form-check-label">`+ arrfilename[i] +`</label>
+                    </div>
+                    `
+                }
+                htmlfilename += "</div>";
+
+                //creating bootstrap popup with bootboxjs
+                bootbox.dialog({
+                    title: "File",
+                    message: "here are list of file that will be executed \n" + htmlfilename
+                });
+
                 //error status
                 if(error)
                 {
@@ -86,54 +120,54 @@ $("#apply-rename").click(function(){
                     });
                 }
                 //no error found
-                else
-                {
-                    //initiate variable to store new file name
-                    newfilename             = "";
+                // else
+                // {
+                //     //initiate variable to store new file name
+                //     newfilename             = "";
 
-                    delete_character        = $("#input-delete-character").val();
-                    replace_character_from  = $("#input-replace-character-from").val();
-                    replace_character_to    = $("#input-replace-character-to").val();
-                    insert_character_before = $("#input-insert-character-before").val();
-                    insert_character_after  = $("#input-insert-character-after").val();
+                //     delete_character        = $("#input-delete-character").val();
+                //     replace_character_from  = $("#input-replace-character-from").val();
+                //     replace_character_to    = $("#input-replace-character-to").val();
+                //     insert_character_before = $("#input-insert-character-before").val();
+                //     insert_character_after  = $("#input-insert-character-after").val();
 
-                    //execution to each file at recent directory                     
-                    file.forEach(function(filename){
+                //     //execution to each file at recent directory                     
+                //     file.forEach(function(filename){
 
-                        /**
-                            * =========================================================================
-                            * get file name without it's extension, assuming file has complete name
-                            * like mytext.pdf, so we will get filename : "mytext" without pdf extension
-                            * =========================================================================
-                            */
-                        temporaryfilename   = filename.split(".");
-                        filenameonly        = temporaryfilename[0];
+                //         /**
+                //             * =========================================================================
+                //             * get file name without it's extension, assuming file has complete name
+                //             * like mytext.pdf, so we will get filename : "mytext" without pdf extension
+                //             * =========================================================================
+                //             */
+                //         temporaryfilename   = filename.split(".");
+                //         filenameonly        = temporaryfilename[0];
 
-                        //set file extension
-                        file_extension      = "." + temporaryfilename[temporaryfilename.length - 1];
+                //         //set file extension
+                //         file_extension      = "." + temporaryfilename[temporaryfilename.length - 1];
 
-                        //function for rename file
-                        if(selected_function == "delete-character")
-                        {
-                            //replace character all file in current directory with nothing
-                            newfilename = filename.replace(delete_character, "");
-                            //run rename
-                            rename(selected_function, fs, directory_location, filename, newfilename);
-                        }
-                        if(selected_function == "replace-character")
-                        {
-                            newfilename = filename.replace(replace_character_from, replace_character_to);
-                            //run rename
-                            rename(selected_function, fs, directory_location, filename, newfilename);
-                        }
-                        if(selected_function == "insert-character")
-                        {
-                            newfilename = insert_character_before + filenameonly + insert_character_after + file_extension;
-                            //run rename
-                            rename(selected_function, fs, directory_location, filename, newfilename);
-                        }
-                    });
-                }
+                //         //function for rename file
+                //         if(selected_function == "delete-character")
+                //         {
+                //             //replace character all file in current directory with nothing
+                //             newfilename = filename.replace(delete_character, "");
+                //             //run rename
+                //             rename(selected_function, fs, directory_location, filename, newfilename);
+                //         }
+                //         if(selected_function == "replace-character")
+                //         {
+                //             newfilename = filename.replace(replace_character_from, replace_character_to);
+                //             //run rename
+                //             rename(selected_function, fs, directory_location, filename, newfilename);
+                //         }
+                //         if(selected_function == "insert-character")
+                //         {
+                //             newfilename = insert_character_before + filenameonly + insert_character_after + file_extension;
+                //             //run rename
+                //             rename(selected_function, fs, directory_location, filename, newfilename);
+                //         }
+                //     });
+                // }
             });
         }
     }
