@@ -21,6 +21,10 @@
 .visible{
     display:block !important;
 }
+.mfm-list-checkbox{
+    max-height: 300px;
+    overflow: auto;
+}
 #file-list{
     max-height: 150px;
     overflow: auto;
