@@ -105,8 +105,22 @@ $("#apply-rename").click(function(){
 
                 //creating bootstrap popup with bootboxjs
                 bootbox.dialog({
-                    title: "File",
-                    message: "here are list of file that will be executed \n" + htmlfilename
+                    title: "Attention",
+                    message: "here are list of file that will be executed \n" + htmlfilename,
+                    closeButton: false,
+                    buttons:
+                    {
+                        cancel:
+                        {
+                            label: "cancel",
+                            className: 'btn-danger'
+                        },
+                        ok:
+                        {
+                            label: "confirm",
+                            className: 'btn-success'
+                        }
+                    }
                 });
 
                 //error status

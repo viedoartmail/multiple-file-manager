@@ -22,7 +22,7 @@
     display:block !important;
 }
 .mfm-list-checkbox{
-    max-height: 300px;
+    max-height: 220px;
     overflow: auto;
 }
 #file-list{
