@@ -92,36 +92,18 @@ $("#apply-rename").click(function(){
 
                 //create html container that will display list of file name in a form with checkbox
                 var htmlfilename = "<div class='mfm-list-checkbox form-group mt-3'>";
+                //variable to store file exception
+                var fileexception = [];
                 for(i = 0; i < arrfilename.length; i++)
                 {
                     htmlfilename += `
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="`+ arrfilename[i] +`" checked>
-                        <label class="form-check-label">`+ arrfilename[i] +`</label>
+                        <input class="form-check-input" type="checkbox" id="` + arrfilename[i] + `"onclick="`+ testfunction()+ `" value="`+ arrfilename[i] +`">
+                        <label class="form-check-label" for="` + arrfilename[i] + `">`+ arrfilename[i] +`</label>
                     </div>
                     `
                 }
                 htmlfilename += "</div>";
-
-                //creating bootstrap popup with bootboxjs
-                bootbox.dialog({
-                    title: "Attention",
-                    message: "here are list of file that will be executed \n" + htmlfilename,
-                    closeButton: false,
-                    buttons:
-                    {
-                        cancel:
-                        {
-                            label: "cancel",
-                            className: 'btn-danger'
-                        },
-                        ok:
-                        {
-                            label: "confirm",
-                            className: 'btn-success'
-                        }
-                    }
-                });
 
                 //error status
                 if(error)
@@ -134,58 +116,54 @@ $("#apply-rename").click(function(){
                     });
                 }
                 //no error found
-                // else
-                // {
-                //     //initiate variable to store new file name
-                //     newfilename             = "";
+                else
+                {
+                    //initiate variable to store new file name
+                    newfilename             = "";
 
-                //     delete_character        = $("#input-delete-character").val();
-                //     replace_character_from  = $("#input-replace-character-from").val();
-                //     replace_character_to    = $("#input-replace-character-to").val();
-                //     insert_character_before = $("#input-insert-character-before").val();
-                //     insert_character_after  = $("#input-insert-character-after").val();
+                    delete_character        = $("#input-delete-character").val();
+                    replace_character_from  = $("#input-replace-character-from").val();
+                    replace_character_to    = $("#input-replace-character-to").val();
+                    insert_character_before = $("#input-insert-character-before").val();
+                    insert_character_after  = $("#input-insert-character-after").val();
 
-                //     //execution to each file at recent directory                     
-                //     file.forEach(function(filename){
-
-                //         /**
-                //             * =========================================================================
-                //             * get file name without it's extension, assuming file has complete name
-                //             * like mytext.pdf, so we will get filename : "mytext" without pdf extension
-                //             * =========================================================================
-                //             */
-                //         temporaryfilename   = filename.split(".");
-                //         filenameonly        = temporaryfilename[0];
-
-                //         //set file extension
-                //         file_extension      = "." + temporaryfilename[temporaryfilename.length - 1];
-
-                //         //function for rename file
-                //         if(selected_function == "delete-character")
-                //         {
-                //             //replace character all file in current directory with nothing
-                //             newfilename = filename.replace(delete_character, "");
-                //             //run rename
-                //             rename(selected_function, fs, directory_location, filename, newfilename);
-                //         }
-                //         if(selected_function == "replace-character")
-                //         {
-                //             newfilename = filename.replace(replace_character_from, replace_character_to);
-                //             //run rename
-                //             rename(selected_function, fs, directory_location, filename, newfilename);
-                //         }
-                //         if(selected_function == "insert-character")
-                //         {
-                //             newfilename = insert_character_before + filenameonly + insert_character_after + file_extension;
-                //             //run rename
-                //             rename(selected_function, fs, directory_location, filename, newfilename);
-                //         }
-                //     });
-                // }
+                    // fileEachRename(file, arrfilename, selected_function, fs, directory_location)
+                    //creating bootstrap popup with bootboxjs
+                    bootbox.prompt({
+                        title: "Attention",
+                        message: "here are list of file that will be executed",
+                        inputType: 'select',
+                        multiple: true,
+                        closeButton: false,
+                        inputOptions: [
+                            {
+                                text: 'Choice One',
+                                value: '1',
+                            },
+                            {
+                                text: 'Choice Two',
+                                value: '2',
+                            },
+                            {
+                                text: 'Choice Three',
+                                value: '3',
+                            }
+                        ],
+                        callback: function()
+                        {
+                            //
+                        }
+                    });
+                }
             });
         }
     }
 });
+
+function testfunction()
+{
+    console.log("yuhuu")
+}
 $("#apply-manage").click(function(){
     //initiate array to store filename
     arrfilename         = [];
@@ -345,6 +323,47 @@ $("#apply-manage").click(function(){
         }
     }
 });
+
+function fileEachRename(file, arrfilename, selected_function, fs, directory_location)
+{
+    //execution to each file at recent directory                     
+    file.forEach(function(filename){
+
+        for(var i = 0; i < arrfilename.length; i++)
+        {
+            if(filename == arrfilename[i])
+            {
+                console.log("here")
+                temporaryfilename   = filename.split(".");
+                filenameonly        = temporaryfilename[0];
+        
+                //set file extension
+                file_extension      = "." + temporaryfilename[temporaryfilename.length - 1];
+        
+                //function for rename file
+                if(selected_function == "delete-character")
+                {
+                    //replace character all file in current directory with nothing
+                    newfilename = filename.replace(delete_character, "");
+                    //run rename
+                    rename(selected_function, fs, directory_location, filename, newfilename);
+                }
+                if(selected_function == "replace-character")
+                {
+                    newfilename = filename.replace(replace_character_from, replace_character_to);
+                    //run rename
+                    rename(selected_function, fs, directory_location, filename, newfilename);
+                }
+                if(selected_function == "insert-character")
+                {
+                    newfilename = insert_character_before + filenameonly + insert_character_after + file_extension;
+                    //run rename
+                    rename(selected_function, fs, directory_location, filename, newfilename);
+                }
+            }
+        }
+    });
+}
 /**
  * 
  * @param fn : "selected function"
