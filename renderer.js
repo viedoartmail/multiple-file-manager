@@ -24,6 +24,24 @@ $("#browse-directory").click(function(){
             //when user confirm submit folder name
             //set input field with attributes id location with result of selected directory
             document.getElementById('location').value = folderposition;
+            //get file location
+            directory_location  = $("#location").val()
+            fs.readdir(directory_location, (error, file)=>{
+        
+                if(error)
+                {
+                    console.error("ERROR: " + error)
+                }
+                else
+                {
+                    var htmlListFile = "<ul class='list-group'>";
+                    file.forEach((filename) => {
+                        htmlListFile += "<li class='list-group-item'>" + filename + "</li>";
+                    })
+                    htmlListFile += "</ul>";
+                    document.getElementById("list-file-name").innerHTML = htmlListFile;
+                }
+            })
         }
         else
         {
