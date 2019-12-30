@@ -29,3 +29,7 @@
     max-height: 280px;
     overflow: auto;
 }
+#list-file-name{
+    height: 300px;
+    overflow-y: auto;
+}
